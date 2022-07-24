@@ -8,3 +8,4 @@ targets:
             - lib/src/di/**
             - lib/src/data/**
             - lib/src/features/**/**/di/**
+            - lib/src/features/**/**/**/di
