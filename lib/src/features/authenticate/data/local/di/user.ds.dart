@@ -1,7 +1,7 @@
 import 'package:injectable/injectable.dart';
 import 'package:logging/logging.dart';
 import 'package:prototype/src/constants/db.dart';
-import 'package:prototype/src/data/local/datasource.dart';
+import 'package:prototype/src/data/local/datasource.abs.dart';
 import 'package:prototype/src/features/authenticate/model/user.m.dart';
 import 'package:prototype/src/features/authenticate/model/user.m.p.dart';
 import 'package:sqflite/sqflite.dart';

@@ -1,7 +1,6 @@
 import 'package:injectable/injectable.dart';
 import 'package:logging/logging.dart';
 import 'package:prototype/src/constants/routes.dart';
-import 'package:prototype/src/features/event/model/event.m.dart';
 import 'package:prototype/src/features/event/model/event_list.st.dart';
 import 'package:prototype/src/features/event/service/di/event.s.dart';
 import 'package:prototype/src/view_model/app_routes.dart';
@@ -29,6 +28,7 @@ class EventListViewModel extends ViewModel {
     _stateSubject.close();
     _routesSubject.close();
   }
+
 
   @override
   void updateState(Map<String, dynamic> updateValue) {

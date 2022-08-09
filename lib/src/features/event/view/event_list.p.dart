@@ -23,62 +23,68 @@ class _EventListPage extends ViewState<EventListPage, EventListViewModel> {
   }
 
   @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    viewModel.getEvents();
-  }
-
-  @override
   void didPopNext() {
     super.didPopNext();
     viewModel.getEvents();
   }
 
   @override
-  Widget build(BuildContext context) {
-    return StreamBuilder<EventListState>(
-        stream: viewModel.state,
-        builder: (context, snapshot) {
-          if (!snapshot.hasData) return Container();
-          final state = snapshot.data!;
+  void didPush() {
+    super.didPush();
+    viewModel.getEvents();
+    
+  }
 
-          return Stack(
-            children: [
-              Scaffold(
-                appBar: AppBar(
-                  title: Text(
-                    'Event Party',
-                    style: Theme.of(context).textTheme.headlineSmall?.merge(
-                          const TextStyle(color: Colors.white),
-                        ),
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(
+          'Event Party',
+          style: Theme.of(context).textTheme.headlineSmall?.merge(
+                const TextStyle(color: Colors.white),
+              ),
+        ),
+        actions: [
+          IconButton(
+            onPressed: () => viewModel.goToCreateEvent(),
+            icon: const Icon(Icons.add),
+          )
+        ],
+      ),
+      body: SafeArea(
+          child: Column(
+        children: [
+          Text('List Event'),
+          Expanded(
+            child: StreamBuilder<EventListState>(
+              stream: viewModel.state,
+              builder: (context, snapshot) {
+                if (!snapshot.hasData) {
+                  return const Center(
+                    child: Text('No state data'),
+                  );
+                }
+                final state = snapshot.data!;
+                if (state.isLoading) {
+                  return const Loading();
+                }
+                return GridView.builder(
+                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 2,
                   ),
-                  actions: [
-                    IconButton(
-                      onPressed: () => viewModel.goToCreateEvent(),
-                      icon: const Icon(Icons.add),
-                    )
-                  ],
-                ),
-                body: SafeArea(
-                  child: GridView.builder(
-                    gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 2
-                    ), 
-                    itemBuilder: (context, index) {
-                      return CardEvent(
-                        eventName: state.events[index].name ?? "",
-                      );
-                    },
-                    itemCount: state.events.length,
-                  )
-                ),
-              ),
-              Visibility(
-                visible: state.isLoading,
-                child: const Loading(),
-              ),
-            ],
-          );
-        });
+                  itemBuilder: (context, index) {
+                    return CardEvent(
+                      eventName: state.events[index].name ?? "",
+                    );
+                  },
+                  itemCount: state.events.length,
+                );
+              },
+            ),
+          ),
+        ],
+      )),
+    );
   }
 }
